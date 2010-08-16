@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C //DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Monte Carlo Integration</title>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript">
+      var w = new Worker('montecarlo.js');
+
+      w.onmessage = function (event) {
+        if (event.data == 'done')
+          $("#startWorker").attr('disabled', '');
+        else {
+          estimated_pi = event.data.estimated_pi;
+          num_iter = event.data.num_iter;
+
+          $.ajax({
+            type: 'POST',
+            url: '/result',
+            data: '{"estimated_pi":'+estimated_pi+',"num_iter":'+num_iter+'}',
+            error: function(response) {
+              if (response.responseText)
+                alert(response.responseText)
+            },
+            dataType: 'json'
+          });
+          
+          $('#value').html(estimated_pi);
+        }
+      }
+
+      $(document).ready(function() {
+        $("#startWorker").click(function() {
+          document.querySelector('#value').innerHTML = 'thinking ...'  
+          var data = {
+            num_iter:parseInt($("#num_iter").val())
+          };
+          w.postMessage(data);
+          $("#startWorker").attr('disabled', 'disabled');
+        });
+      });
+      
+    </script>
+  </head>
+  <body>
+    <label for="num_iter">Iterations</label>
+    <input name="num_iter" id="num_iter" type="text" value="{{ num_iter }}" />
+    <div><input type="button" value="Start" id="startWorker" /></div>
+    <div><span id="value"></span></div>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C //DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Monte Carlo Integration</title>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Value');
+        data.addColumn('number', 'Result');
+        data.addRows({{ num_rows }});
+        {% for row in rows %}
+          data.setValue({{ row }});
+        {% endfor %}
+        var chart_div = document.getElementById('chart_div');
+        var chart = new google.visualization.ScatterChart(chart_div);
+        var max = {{ num_rows }};
+        chart.draw(
+          data, 
+          {width: 1000, height: 600,
+           title: 'Computed Results',
+           hAxis: {title: 'Last '+max+' Results', minValue: 0, maxValue: max},
+           vAxis: {title: 'Estimated π', minValue: 3.13, maxValue: 3.15},
+           legend: 'none'
+          });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="chart_div"></div>
+    <div id="number_pi">{{ pi }}</div>
+  </body>
+</html>
