@@ -7,8 +7,8 @@ from google.appengine.ext.webapp import util
 import django.utils.simplejson
 
 
-class Result(db.Model):
-    """Stores a results and provides handy properties."""
+class Record(db.Model):
+    """Stores a record and provides handy properties."""
 
     estimated_pi = db.FloatProperty()
     num_iter = db.IntegerProperty()
@@ -26,7 +26,7 @@ class MainHandler(webapp.RequestHandler):
         self.response.out.write(template.render('index.html', locals()))
 
 
-class ResultHandler(webapp.RequestHandler):
+class RecordHandler(webapp.RequestHandler):
     """Receives computed results and stores them."""
 
     def post(self):
@@ -40,16 +40,16 @@ class ResultHandler(webapp.RequestHandler):
             return
 
         if data:
-            resultset = Result(
+            record = Record(
                 estimated_pi=float(data['estimated_pi']),
                 num_iter=data['num_iter'],
                 user=users.get_current_user()
             )
-            resultset.put() 
+            record.put() 
 
 
 class ChartHandler(webapp.RequestHandler):
-    """Uses Google Visualization API to draw a chart from stored results.
+    """Uses Google Visualization API to draw a chart from stored records.
 
     See documentation for 'Visualization: Scatter Chart' at:
     http://code.google.com/apis/charttools
@@ -62,16 +62,16 @@ class ChartHandler(webapp.RequestHandler):
         if num > 1000:
             num = 1000
 
-        results = Result.all().order('-num_iter').order('-date').fetch(num)
+        records = Record.all().order('-num_iter').order('-date').fetch(num)
 
-        values = [r.estimated_pi for r in results]
+        values = [r.estimated_pi for r in records]
 
         num_rows = len(values)
 
         rows = []
 
         for i in range(num_rows):
-            rows.append("%i, 0, -%i" % (i, i+1))
+            rows.append("%i, 0, %i" % (i, i+1))
             rows.append("%i, 1, %f" % (i, values[i]))
 
         if values:
@@ -84,7 +84,7 @@ class ChartHandler(webapp.RequestHandler):
 
 app = webapp.WSGIApplication([
     ('/', MainHandler),
-    ('/result', ResultHandler),
+    ('/record', RecordHandler),
     ('/chart', ChartHandler),
 ], debug=True)
 

@@ -33,7 +33,7 @@ handlers:
   static_files: favicon.ico
   upload: favicon.ico
 
-- url: /result
+- url: /record
   script: app.py
   login: required
 

@@ -17,7 +17,7 @@
 
           $.ajax({
             type: 'POST',
-            url: '/result',
+            url: '/record',
             data: '{"estimated_pi":'+estimated_pi+',"num_iter":'+num_iter+'}',
             error: function(response) {
               if (response.responseText)
