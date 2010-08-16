@@ -41,7 +41,7 @@ class ResultHandler(webapp.RequestHandler):
 
         if data:
             resultset = Result(
-                estimated_pi=data['estimated_pi'],
+                estimated_pi=float(data['estimated_pi']),
                 num_iter=data['num_iter'],
                 user=users.get_current_user()
             )
@@ -64,20 +64,20 @@ class ChartHandler(webapp.RequestHandler):
 
         results = Result.all().order('-num_iter').order('-date').fetch(num)
 
-        values = [r.estimated_pi for r in reversed(results)]
+        values = [r.estimated_pi for r in results]
 
         num_rows = len(values)
 
         rows = []
 
         for i in range(num_rows):
-            rows.append("%i, %i, %i" % (i, 0, i+1))
-            rows.append("%i, %i, %f" % (i, 1, values[i]))
+            rows.append("%i, 0, -%i" % (i, i+1))
+            rows.append("%i, 1, %f" % (i, values[i]))
 
         if values:
             pi = sum(values)/num_rows
         else:
-            pi = ''
+            pi = 'unknown'
 
         self.response.out.write(template.render('chart.html', locals()))
 
