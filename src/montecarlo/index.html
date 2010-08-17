@@ -12,13 +12,16 @@
         if (event.data == 'done')
           $("#startWorker").attr('disabled', '');
         else {
-          estimated_pi = event.data.estimated_pi;
-          num_iter = event.data.num_iter;
+          var estimated_pi = event.data.estimated_pi;
+          var num_iter = event.data.num_iter;
+          var duration_ms = event.data.duration_ms;
 
           $.ajax({
             type: 'POST',
             url: '/record',
-            data: '{"estimated_pi":'+estimated_pi+',"num_iter":'+num_iter+'}',
+            data: '{"estimated_pi":'+estimated_pi+
+                  ',"num_iter":'+num_iter+
+                  ',"duration_ms":'+duration_ms+'}',
             error: function(response) {
               if (response.responseText)
                 alert(response.responseText)
@@ -26,7 +29,7 @@
             dataType: 'json'
           });
           
-          $('#value').html(estimated_pi);
+          $('#value').html(estimated_pi+' (duration: '+duration_ms+' ms)');
         }
       }
 

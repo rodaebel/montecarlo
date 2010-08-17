@@ -29,6 +29,7 @@ class Record(db.Model):
 
     estimated_pi = db.FloatProperty()
     num_iter = db.IntegerProperty()
+    duration_ms = db.IntegerProperty()
     date = db.DateTimeProperty(auto_now=True)
     user = db.UserProperty()
 
@@ -60,6 +61,7 @@ class RecordHandler(webapp.RequestHandler):
             record = Record(
                 estimated_pi=float(data['estimated_pi']),
                 num_iter=data['num_iter'],
+                duration_ms=data['duration_ms'],
                 user=users.get_current_user()
             )
             record.put() 
