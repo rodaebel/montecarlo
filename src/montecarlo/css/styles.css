@@ -75,3 +75,29 @@ img.right {
   font-style: italic;
   font-weight: normal;
 }
+
+label {
+  background-color: #ddd;
+  border: 10px solid #ddd;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  color: #666;
+  font-family: "Warnock Pro", "Goudy Old Style", "Palatino", "Book Antiqua", Georgia, serif;
+  font-size: 1.4em;
+  font-style: italic;
+  float: left;
+  margin: 0 0 0 20px;
+  position: relative;
+  top: 30px;
+}
+
+input#num_iter {
+  border: 10px solid #ddd;
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  color: #666;
+  font-size: 4.0em;
+  position: relative;
+  text-align: center;
+  width: 300px;
+}

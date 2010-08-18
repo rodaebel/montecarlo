@@ -81,18 +81,28 @@
       <hr />
       <div class="span-14 colborder">
         <p>
-          Some introductional text.
+          <h3>Monte Carlo Integration</h3>
+          Monte Carlo (MC) methods are based on the use of random numbers and
+          probability statistics to investigate problems. You can find MC
+          methods used in everything from economics to nuclear physics to
+          regulating the flow of traffic.
+        </p>
+        <p>
+          <h3>Web Workers</h3>
+          Web Workers enable a web application to load JavaScript dynamically
+          and run it in a background process, not affecting the user interface.
+          The user experience is not interrupted, while all Web Worker
+          computation is in the background.
         </p>
       </div>
       <div class="span-9 last">
         <p>
-          Something about the app.
-        </p>
-        <p>
-          <div><a href="/chart">Chart</a></div>
-          <label for="num_iter">Iterations</label>
+          <label for="num_iter">Number of Iterations</label>
           <input id="num_iter" type="text" value="{{ num_iter }}" />
-          <div><input type="button" value="Run" id="runWorker" /></div>
+          <div>
+            <input type="button" value="Run" id="runWorker" />
+            <a href="/chart">View Chart</a>
+          </div>
           <div><span id="value"></span></div>
         </p>
       </div>
