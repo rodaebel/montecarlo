@@ -5,9 +5,32 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Distributed Monte Carlo Integration</title>
     <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="montecarlo.js"></script>
     <script type="text/javascript">
       function reloadChart() {
         $("#chart")[0].src = "/chart?height=200&width=320";
+      }
+
+      function processResult(data) {
+        var estimated_pi = data.estimated_pi;
+        var num_iter = data.num_iter;
+        var duration_ms = data.duration_ms;
+
+        $.ajax({
+          type: 'POST',
+          url: '/record',
+          data: '{"estimated_pi":'+estimated_pi+
+                ',"num_iter":'+num_iter+
+                ',"duration_ms":'+duration_ms+'}',
+          error: function(response) {
+            if (response.responseText)
+              alert(response.responseText)
+          },
+          dataType: 'json'
+        });
+        
+        $('#value').html(estimated_pi+' (duration: '+duration_ms+' ms)');
+        reloadChart();
       }
 
       var w = new Worker('montecarlo.js');
@@ -16,36 +39,25 @@
         if (event.data == 'done')
           $("#runWorker").attr('disabled', '');
         else {
-          var estimated_pi = event.data.estimated_pi;
-          var num_iter = event.data.num_iter;
-          var duration_ms = event.data.duration_ms;
-
-          $.ajax({
-            type: 'POST',
-            url: '/record',
-            data: '{"estimated_pi":'+estimated_pi+
-                  ',"num_iter":'+num_iter+
-                  ',"duration_ms":'+duration_ms+'}',
-            error: function(response) {
-              if (response.responseText)
-                alert(response.responseText)
-            },
-            dataType: 'json'
-          });
-          
-          $('#value').html(estimated_pi+' (duration: '+duration_ms+' ms)');
-          reloadChart();
+          processResult(event.data);
         }
       }
 
       $(document).ready(function() {
         $("#runWorker").click(function() {
           document.querySelector('#value').innerHTML = 'thinking ...'  
-          var data = {
-            num_iter:parseInt($("#num_iter").val())
-          };
-          w.postMessage(data);
           $("#runWorker").attr('disabled', 'disabled');
+          var data = {
+            num_iter: parseInt($("#num_iter").val()),
+            worker_enabled: false
+          };
+          if ($("#WebWorkerEnabled").attr("checked")) {
+            data.worker_enabled = true;
+            w.postMessage(data);
+          } else {
+            run(data);
+            $("#runWorker").attr('disabled', '');
+          }
         });
       });
     </script>
@@ -103,6 +115,8 @@
         <label for="num_iter">Number of Iterations</label>
         <input id="num_iter" type="text" value="{{ num_iter }}" />
         <div>
+          Use Web Worker?
+          <input type="checkbox" id="WebWorkerEnabled" checked="checked" />
           <input type="button" value="Run" id="runWorker" />
           <span id="value"></span>
         </div>

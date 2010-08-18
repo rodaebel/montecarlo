@@ -48,9 +48,15 @@ function run(data) {
 
     end = new Date();
 
-    postMessage({estimated_pi: pi,
-                 num_iter: data.num_iter,
-                 duration_ms: end.valueOf()-start.valueOf()});
-    postMessage('done');
+    var message = {estimated_pi: pi,
+                   num_iter: data.num_iter,
+                   duration_ms: end.valueOf()-start.valueOf()};
+
+    if (data.worker_enabled) {
+      postMessage(message);
+      postMessage('done');
+    } else {
+      processResult(message);
+    }
   }
 }
