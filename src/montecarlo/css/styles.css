@@ -96,7 +96,8 @@ input#num_iter {
   border-radius: 20px;
   -moz-border-radius: 20px;
   color: #666;
-  font-size: 4.0em;
+  font-size: 3.0em;
+  outline: none;
   position: relative;
   text-align: center;
   width: 300px;

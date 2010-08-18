@@ -6,6 +6,10 @@
     <title>Distributed Monte Carlo Integration</title>
     <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript">
+      function reloadChart() {
+        $("#chart")[0].src = "/chart?height=200&width=320";
+      }
+
       var w = new Worker('montecarlo.js');
 
       w.onmessage = function (event) {
@@ -30,6 +34,7 @@
           });
           
           $('#value').html(estimated_pi+' (duration: '+duration_ms+' ms)');
+          reloadChart();
         }
       }
 
@@ -43,10 +48,6 @@
           $("#runWorker").attr('disabled', 'disabled');
         });
       });
-
-      function reloadIframe() {
-        $("#chart")[0].src = "/chart?height=200&width=320";
-      }
     </script>
     <link rel="stylesheet" href="/css/blueprint/screen.css" type="text/css" media="screen, projection" />
     <link rel="stylesheet" href="/css/blueprint/print.css" type="text/css" media="print" />
@@ -99,17 +100,18 @@
         </p>
       </div>
       <div class="span-9 last">
-          <iframe id="chart" src="/chart?height=200&width=320" height="220" width="350">
-          </iframe>
-          <br />
-          <a href="javascript:reloadIframe();">Update</a>&nbsp;|&nbsp;
-          <a href="/chart">Zoom</a>
         <label for="num_iter">Number of Iterations</label>
         <input id="num_iter" type="text" value="{{ num_iter }}" />
         <div>
           <input type="button" value="Run" id="runWorker" />
+          <span id="value"></span>
         </div>
-        <div><span id="value"></span></div>
+        <iframe id="chart" src="/chart?height=200&width=320" height="220" width="350">
+        </iframe>
+        <div>
+          <a href="javascript:reloadChart();">Update</a>&nbsp;|&nbsp;
+          <a href="/chart" target="_blank">Zoom</a>
+        </div>
       </div>
       <div class="span-24">
       </div>
