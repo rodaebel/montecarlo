@@ -41,10 +41,10 @@ function run(data) {
       x = random();
       y = random();
       z = x*x+y*y;
-      if (z < 1.0) count++;
+      if (z <= 1.0) count++;
     }
 
-    pi = 4.0*count/(data.num_iter);
+    pi = count/(data.num_iter)*4.0;
 
     end = new Date();
 
