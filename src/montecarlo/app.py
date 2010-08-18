@@ -34,12 +34,26 @@ class Record(db.Model):
     user = db.UserProperty()
 
 
+def get_login_or_logout(user):
+    """Returns login/logout link."""
+
+    link = '<a href="%(href)s">%(label)s</a>'
+
+    if user:
+        vars = dict(href=users.create_logout_url('/'), label='Logout')
+    else:
+        vars = dict(href=users.create_login_url('/'), label='Login')
+
+    return link % vars
+
+
 class MainHandler(webapp.RequestHandler):
     """The main handler."""
 
     def get(self):
         """Handles GET."""
 
+        login_or_logout = get_login_or_logout(users.get_current_user())
         num_iter = int(self.request.GET.get('num_iter', 1000000))
         self.response.out.write(template.render('index.html', locals()))
 
@@ -49,6 +63,10 @@ class RecordHandler(webapp.RequestHandler):
 
     def post(self):
         """Handles POST."""
+
+        if not users.get_current_user():
+            self.response.out.write('Only logged in users can record data.')
+            return
 
         data = None
         try:

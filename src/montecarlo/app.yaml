@@ -35,11 +35,9 @@ handlers:
 
 - url: /record
   script: app.py
-  login: required
 
 - url: /chart
   script: app.py
 
 - url: /
   script: app.py
-  login: required
