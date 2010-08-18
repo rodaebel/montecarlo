@@ -17,6 +17,15 @@ a copy of the License at
   http://www.apache.org/licenses/LICENSE-2.0
 
 
+Online Demo
+-----------
+
+In order to try an online demo, access the following URL with a HTML5 Web
+Workers capable browser like Google Chrome or Safari:
+
+  http://montecarlo-integration.appspot.com
+
+
 Requirements
 ------------
 
@@ -55,7 +64,7 @@ Then access the application using a web browser with the following URL::
   http://localhost:8080/
 
 
-Uploading and managing
+Uploading and Managing
 ----------------------
 
 To upload application files, run::

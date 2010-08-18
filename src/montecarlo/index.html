@@ -3,14 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Monte Carlo Integration</title>
+    <title>Distributed Monte Carlo Integration</title>
     <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript">
       var w = new Worker('montecarlo.js');
 
       w.onmessage = function (event) {
         if (event.data == 'done')
-          $("#startWorker").attr('disabled', '');
+          $("#runWorker").attr('disabled', '');
         else {
           var estimated_pi = event.data.estimated_pi;
           var num_iter = event.data.num_iter;
@@ -34,23 +34,70 @@
       }
 
       $(document).ready(function() {
-        $("#startWorker").click(function() {
+        $("#runWorker").click(function() {
           document.querySelector('#value').innerHTML = 'thinking ...'  
           var data = {
             num_iter:parseInt($("#num_iter").val())
           };
           w.postMessage(data);
-          $("#startWorker").attr('disabled', 'disabled');
+          $("#runWorker").attr('disabled', 'disabled');
         });
       });
       
     </script>
+    <link rel="stylesheet" href="/css/blueprint/screen.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="/css/blueprint/print.css" type="text/css" media="print" />
+    <!--[if lt IE 8]>
+      <link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection">
+    <![endif]-->
+    <link rel="stylesheet" href="/css/styles.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="/css/print.css" type="text/css" media="print" />
   </head>
   <body>
-    <div>{{ login_or_logout }} <a href="/chart">Chart</a></div>
-    <label for="num_iter">Iterations</label>
-    <input name="num_iter" id="num_iter" type="text" value="{{ num_iter }}" />
-    <div><input type="button" value="Start" id="startWorker" /></div>
-    <div><span id="value"></span></div>
+    <div class="container">
+      <div id="header" class="span-24">
+        <div class="links">
+          <a href="http://code.google.com/appengine">Google App Engine</a>
+          <span>&nbsp;</span>
+          <a href="http://www.html5rocks.com">HTML5ROCKS</a>
+          <span>&nbsp;</span>
+          {{ login_or_logout }}
+          <a href="http://github.com/rodaebel/montecarlo">
+            <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+        </div>
+      </div>
+      <div class="span-24 headline">
+        <div class="span-24">
+          <h1>
+            Distributed Monte Carlo Integration to Estimate Pi
+          </h1>
+          <hr />
+          <h2 class="emph">
+            Using Google App Engine and HTML5 Web Workers to distribute
+            Monte Carlo Simulations to thousands of web clients.
+          </h2>
+        </div>
+      </div>
+      <hr />
+      <div class="span-14 colborder">
+        <p>
+          Some introductional text.
+        </p>
+      </div>
+      <div class="span-9 last">
+        <p>
+          Something about the app.
+        </p>
+        <p>
+          <div><a href="/chart">Chart</a></div>
+          <label for="num_iter">Iterations</label>
+          <input id="num_iter" type="text" value="{{ num_iter }}" />
+          <div><input type="button" value="Run" id="runWorker" /></div>
+          <div><span id="value"></span></div>
+        </p>
+      </div>
+      <div class="span-24">
+      </div>
+    </div>
   </body>
 </html>

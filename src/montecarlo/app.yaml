@@ -29,6 +29,14 @@ handlers:
   upload: js/(.*\.(js))
   expiration: 5h
 
+- url: /css
+  static_dir: css
+
+- url: /(.*\.(gif|jpg|png))
+  static_files: images/\1
+  upload: images/(.*\.(gif|jpg|png))
+  expiration: 5h
+
 - url: /favicon.ico
   static_files: favicon.ico
   upload: favicon.ico
