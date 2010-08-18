@@ -22,7 +22,7 @@
         var pi = "{{ pi }}";
         chart.draw(
           data, 
-          {width: 1000, height: 600,
+          {width: {{ width }}, height: {{ height }},
            title: 'The average computed value of Pi is '+pi+
                   ' (real: 3.14159265)',
            hAxis: {title: 'records', minValue: 0, maxValue: max},

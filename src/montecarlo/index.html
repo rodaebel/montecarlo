@@ -43,7 +43,10 @@
           $("#runWorker").attr('disabled', 'disabled');
         });
       });
-      
+
+      function reloadIframe() {
+        $("#chart")[0].src = "/chart?height=200&width=320";
+      }
     </script>
     <link rel="stylesheet" href="/css/blueprint/screen.css" type="text/css" media="screen, projection" />
     <link rel="stylesheet" href="/css/blueprint/print.css" type="text/css" media="print" />
@@ -80,15 +83,15 @@
       </div>
       <hr />
       <div class="span-14 colborder">
+        <h3>Monte Carlo Integration</h3>
         <p>
-          <h3>Monte Carlo Integration</h3>
           Monte Carlo (MC) methods are based on the use of random numbers and
           probability statistics to investigate problems. You can find MC
           methods used in everything from economics to nuclear physics to
           regulating the flow of traffic.
         </p>
+        <h3>Web Workers</h3>
         <p>
-          <h3>Web Workers</h3>
           Web Workers enable a web application to load JavaScript dynamically
           and run it in a background process, not affecting the user interface.
           The user experience is not interrupted, while all Web Worker
@@ -96,15 +99,17 @@
         </p>
       </div>
       <div class="span-9 last">
-        <p>
-          <label for="num_iter">Number of Iterations</label>
-          <input id="num_iter" type="text" value="{{ num_iter }}" />
-          <div>
-            <input type="button" value="Run" id="runWorker" />
-            <a href="/chart">View Chart</a>
-          </div>
-          <div><span id="value"></span></div>
-        </p>
+          <iframe id="chart" src="/chart?height=200&width=320" height="220" width="350">
+          </iframe>
+          <br />
+          <a href="javascript:reloadIframe();">Update</a>&nbsp;|&nbsp;
+          <a href="/chart">Zoom</a>
+        <label for="num_iter">Number of Iterations</label>
+        <input id="num_iter" type="text" value="{{ num_iter }}" />
+        <div>
+          <input type="button" value="Run" id="runWorker" />
+        </div>
+        <div><span id="value"></span></div>
       </div>
       <div class="span-24">
       </div>

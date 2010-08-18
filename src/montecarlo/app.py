@@ -95,6 +95,8 @@ class ChartHandler(webapp.RequestHandler):
     def get(self):
         """Handles GET."""
 
+        height = self.request.GET.get('height', 600)
+        width = self.request.GET.get('width', 1000)
         num = int(self.request.GET.get('num', 100))
         if num > 1000:
             num = 1000
