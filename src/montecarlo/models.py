@@ -1,0 +1,35 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright 2010 Tobias Rodäbel
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""Models for the montecarlo-integration demo application."""
+
+from google.appengine.datastore import entity_pb
+from google.appengine.ext import db
+
+
+class Record(db.Model):
+    """Stores a record and provides handy properties."""
+
+    estimated_pi = db.FloatProperty()
+    num_iter = db.IntegerProperty()
+    duration_ms = db.IntegerProperty()
+    date = db.DateTimeProperty(auto_now=True)
+    user = db.UserProperty()
+
+
+def deferred_put(entities_pb):
+    entities = [db.model_from_protobuf(entity_pb.EntityProto(pb))
+                for pb in entities_pb]
+    db.put(entities)

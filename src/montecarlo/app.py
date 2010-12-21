@@ -15,23 +15,14 @@
 # limitations under the License.
 """Sample GAE app for distributing Monte Carlo Simulations to compute Pi."""
 
+from django.utils import simplejson
 from google.appengine.api import users
 from google.appengine.ext import db
+from google.appengine.ext import deferred
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp import util
-
-import django.utils.simplejson
-
-
-class Record(db.Model):
-    """Stores a record and provides handy properties."""
-
-    estimated_pi = db.FloatProperty()
-    num_iter = db.IntegerProperty()
-    duration_ms = db.IntegerProperty()
-    date = db.DateTimeProperty(auto_now=True)
-    user = db.UserProperty()
+from models import Record, deferred_put
 
 
 def get_login_or_logout(user):
@@ -70,7 +61,7 @@ class RecordHandler(webapp.RequestHandler):
 
         data = None
         try:
-            data = django.utils.simplejson.loads(self.request.body)
+            data = simplejson.loads(self.request.body)
         except ValueError, e:
             self.response.out.write('Server received malformed data (%s)' % e)
             return
@@ -82,7 +73,8 @@ class RecordHandler(webapp.RequestHandler):
                 duration_ms=data['duration_ms'],
                 user=users.get_current_user()
             )
-            record.put() 
+            deferred.defer(
+                deferred_put, [db.model_to_protobuf(record).Encode()])
 
 
 class ChartHandler(webapp.RequestHandler):
