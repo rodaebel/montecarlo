@@ -4,6 +4,7 @@ runtime: python
 api_version: 1
 
 builtins:
+- appstats: on
 - datastore_admin: on
 
 skip_files:
@@ -27,9 +28,6 @@ handlers:
 - url: /_ah/queue/deferred
   script: $PYTHON_LIB/google/appengine/ext/deferred/deferred.py
   login: admin
-
-- url: /stats.*
-  script: $PYTHON_LIB/google/appengine/ext/appstats/ui.py
 
 - url: /(.*\.(js))
   static_files: js/\1
