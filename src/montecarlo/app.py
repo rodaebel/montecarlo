@@ -15,7 +15,6 @@
 # limitations under the License.
 """Sample GAE app for distributing Monte Carlo Simulations to compute Pi."""
 
-from django.utils import simplejson
 from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import deferred
@@ -23,6 +22,8 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp import util
 from models import Record, deferred_put
+
+import simplejson
 
 
 def get_login_or_logout(user):
