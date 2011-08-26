@@ -9,10 +9,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
 #include <time.h>
 
-#define DEFAULT_ITERATIONS pow(10, 6)
+#define DEFAULT_ITERATIONS 1000000
 #define RANDOM_SEED (unsigned)time(NULL)/2
 
 
