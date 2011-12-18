@@ -20,10 +20,9 @@ from google.appengine.ext import db
 from google.appengine.ext import deferred
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
-from google.appengine.ext.webapp import util
 from models import Record, deferred_put
 
-import simplejson
+import json
 
 
 def get_login_or_logout(user):
@@ -32,11 +31,9 @@ def get_login_or_logout(user):
     link = '<a href="%(href)s">%(label)s</a>'
 
     if user:
-        vars = dict(href=users.create_logout_url('/'), label='Logout')
-    else:
-        vars = dict(href=users.create_login_url('/'), label='Login')
+        return link % dict(href=users.create_logout_url('/'), label='Logout')
 
-    return link % vars
+    return link % dict(href=users.create_login_url('/'), label='Login')
 
 
 class MainHandler(webapp.RequestHandler):
@@ -62,7 +59,7 @@ class RecordHandler(webapp.RequestHandler):
 
         data = None
         try:
-            data = simplejson.loads(self.request.body)
+            data = json.loads(self.request.body)
         except ValueError, e:
             self.response.out.write('Server received malformed data (%s)' % e)
             return
@@ -114,18 +111,8 @@ class ChartHandler(webapp.RequestHandler):
         self.response.out.write(template.render('chart.html', locals()))
 
 
-app = webapp.WSGIApplication([
+application = webapp.WSGIApplication([
     ('/', MainHandler),
     ('/record', RecordHandler),
     ('/chart', ChartHandler),
 ], debug=True)
-
-
-def main():
-    """The main function."""
-
-    webapp.util.run_wsgi_app(app)
-
-
-if __name__ == '__main__':
-    main()
