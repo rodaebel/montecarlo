@@ -9,7 +9,7 @@ Monte Carlo Simulations in a highly distributed way.
 Copyright and License
 ---------------------
 
-Copyright 2010 Tobias Rodaebel
+Copyright 2010, 2011 Tobias Rodaebel
 
 This software is released under the Apache License, Version 2.0. You may obtain
 a copy of the License at
@@ -35,7 +35,7 @@ Buildout needs Python and the tools contained in /bin and /usr/bin of a
 standard installation of the Linux operating environment. You should ensure
 that these directories are on your PATH and following programs can be found:
 
-* Python 2.5.2+ (3.x is not supported!)
+* Python 2.7+ (3.x is not supported!)
 * virtualenv (optional)
 
 
